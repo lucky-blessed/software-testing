@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Todo App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+       
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+       
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+       
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+       
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+       
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+       
+        button:hover {
+            background-color: #45a049;
+        }
+       
+        .delete-btn {
+            background-color: #f44336;
+            padding: 5px 10px;
+            margin-left: 10px;
+        }
+       
+        .delete-btn:hover {
+            background-color: #da190b;
+        }
+       
+        .clear-btn {
+            background-color: #ff9800;
+            width: 100%;
+            margin-top: 10px;
+        }
+       
+        .clear-btn:hover {
+            background-color: #e68900;
+        }
+       
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+       
+        li {
+            padding: 15px;
+            background: #f9f9f9;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+       
+        li.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+       
+        .checkbox {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+       
+        .task-text {
+            flex: 1;
+        }
+       
+        .counter {
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+       
+        #message {
+            text-align: center;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+       
+        #message.success {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Simple Todo App</h1>
+
+        <div class="input-section">
+            <input type="text" id="todiInput" placeholder="Enter task..." data-testId="todo-input">
+            <button onclick="addTodo()">Submit</button>
+
+        </div>
+        <div id="message"></div>
+        <ul data-testId="todo-list"></ul>
+
+        <button onclick="clearCompleted()" class="clear-btn" data-testId="clear-button">Clear completed</button>
+
+        <div class="counter" data-testId="counter">
+            Total: <span id="completedCount">0</span>
+            Completed: <span id="completedCount">0</span>
+        </div>
+    </div>
+
+    <script>
+
+        // In-memory todo list initialized but empty
+        let todos = [];
+        function addTodo() {
+            // Grab input value and trim to remove leading and trailing whitespaces
+            const input = document.getElementById('todoInput');
+            const task = input.value.trip();
+
+            // Null-check
+            if (task === '') {
+                alert('Task cannot be empty!');
+                return;
+            }
+            
+            // Create an object literal for the new task item
+            todos.push({
+                id: Date.now(),
+                text: task,
+                completed: false
+            });
+
+            // Clrar the input field
+            input.value = '';
+            showMessage('Task added successfully!');
+            renderTodos();
+        }
+
+        function toggletodo(id) {
+            // Mapping or find functions in the array to locate item by id
+            const todo = todos.find(t => t.id === id);
+            todo.completed = !todo.completed;
+            renderTodos();
+
+        }
+
+        function deleteTodo(id) {
+            // Filter method to remove the todo item with the specifield id
+            todo = todos.filter(t => t.id !== id);
+            renderTodos();
+        }
+
+        function clearCompleted() {
+            // Filter method, we call length on completed items
+            const completedCount = todos.filter(t => t.completed).length;
+            // Updating the todos array to include only uncompleted items
+            todos = todos.filter(t => !t.completed);
+            // Checking to see if any task(s) were cleared
+            if (completedCount > 0) {
+                showMessage(`${completedCount} completed task(s) cleared`);
+            }
+            renderTodos();
+        }
+
+        function renderTodos() {
+            const list = document.getElementById('todo-list');
+            // Clear existing list items
+            list.innerHTML = '';
+
+            // Perform a function on each todo item
+            todos.forEach(todo => {
+                const li = document.createElement('li');
+                // Tenery operator to set the class name based on completion status
+                li.className = todo.completed ? 'completed' : '';
+                // Set the li attribute to data-testid and assign it to value of 'todo-item'
+                li.setAttribute('data-testid', 'todo-item');
+
+                li.innerHTML = `
+                    <input
+                        type="checkbox"
+                        class="checkbox"
+                        ${todo.completed ? 'checked' : ''}
+                        onchange="toggleTodo(${todo.id})"
+                        data-testid="todo-checkbox"
+                        >
+                    <span class="task-text">${todo.text}</span>
+                    <button
+                        class="delete-btn"
+                        onclick="deleteTodo(${todo.id})"
+                        data-testid="delete-button"
+                        >Delete</button>
+                `;
+                list.appendChild(li);
+            });
+            updateCounter();
+        }
+
+        function updateCounter() {
+            document.getElementById('totalCount').textContent = todos.length;
+            document.getElementById('completedCount').textContent = tosos.filter(t => t.completed).length;
+        }
+
+        function showMessage(text) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = 'success';
+            setTimeout(() =>{
+                message.style.display= 'none';
+            }, 3000);
+        }
+
+    </script>
+    
+
+</body>
+</html>

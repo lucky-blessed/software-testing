@@ -45,3 +45,36 @@ class LoginForm:
             return False
         
         return True
+    
+
+def main():
+    print("=" * 50)
+    print("Login Form")
+    print("=" * 50)
+    form = LoginForm()
+
+    # Get email input
+    email = input("\nEnter your enail: ").strip()
+
+    # Get password input
+    password = input("\nEnter your password: ").strip()
+
+    # Validate input
+    email_valid = form.validate_email(email)
+    password_valid = form.validate_password(password)
+
+    print("\n" + "=" * 50)
+
+    # Display results
+    if email_valid and password_valid:
+        print("Login successful!")
+    else:
+        print("Login faied due to the error:")
+        for error in form.errors:
+            print(f"- {error}")
+
+    print("=" * 50)
+
+
+if __name__ == "__main__":
+    main()

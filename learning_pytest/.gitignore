@@ -1,0 +1,4 @@
+.env
+*.log
+note2.md
+code.py
