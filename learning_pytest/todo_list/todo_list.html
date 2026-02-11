@@ -132,14 +132,14 @@
         <h1>Simple Todo App</h1>
 
         <div class="input-section">
-            <input type="text" id="todiInput" placeholder="Enter task..." data-testId="todo-input">
+            <input type="text" id="todoInput" placeholder="Enter task..." data-testid="todo-input">
             <button onclick="addTodo()">Submit</button>
 
         </div>
         <div id="message"></div>
-        <ul data-testId="todo-list"></ul>
+        <ul id="todo-list" data-testId="todo-list"></ul>
 
-        <button onclick="clearCompleted()" class="clear-btn" data-testId="clear-button">Clear completed</button>
+        <button onclick="clearCompleted()" class="clear-btn" data-testid="clear-button">Clear completed</button>
 
         <div class="counter" data-testId="counter">
             Total: <span id="completedCount">0</span>
@@ -154,7 +154,7 @@
         function addTodo() {
             // Grab input value and trim to remove leading and trailing whitespaces
             const input = document.getElementById('todoInput');
-            const task = input.value.trip();
+            const task = input.value.trim();
 
             // Null-check
             if (task === '') {
