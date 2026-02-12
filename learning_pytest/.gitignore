@@ -1,4 +1,16 @@
-.env
 *.log
 note2.md
 code.py
+note.md
+vevn/
+.venv/
+
+env/
+.env/
+
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+*.ipynb_checkpoints/

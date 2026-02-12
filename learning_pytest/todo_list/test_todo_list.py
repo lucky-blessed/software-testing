@@ -10,7 +10,8 @@ import os
 server = None 
 server_thread = None 
 
-def start_server():
+
+def start_server(port=8000):
     # Start a HTTP server in a backgroung thread
 
     global server, server_thread
