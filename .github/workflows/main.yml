@@ -20,7 +20,7 @@ jobs:
             - name: install dependencies
               run:
                 pip install pytest playwright pytest-playwright
-                playwright install --with-deps chromium
+                playwright install chromium
 
             - name: Run unit tests
               run: pytest --ignore=todo_list/ -v
