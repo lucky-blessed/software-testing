@@ -14,5 +14,18 @@ jobs:
 
 
             - uses: actions/setup-python@v5
-            with:
+              with:
                 python-version: "3.12"
+
+            - name: install dependencies
+              run:
+                pip install pytest playwright pytest-playwright
+                playwright install --with-deps chromium
+
+            - name: Run unit tests
+              run: pytest --ignore=todo_list/ -v
+            - name: Run e2e tests
+              run: pytest todo_list/test_todo_list.py -v
+
+
+
