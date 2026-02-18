@@ -142,7 +142,7 @@
         <button onclick="clearCompleted()" class="clear-btn" data-testid="clear-button">Clear completed</button>
 
         <div class="counter" data-testId="counter">
-            Total: <span id="completedCount">0</span>
+            Total: <span id="totalCount">0</span>
             Completed: <span id="completedCount">0</span>
         </div>
     </div>
@@ -175,7 +175,7 @@
             renderTodos();
         }
 
-        function toggletodo(id) {
+        function toggleTodo(id) {
             // Mapping or find functions in the array to locate item by id
             const todo = todos.find(t => t.id === id);
             todo.completed = !todo.completed;
@@ -236,7 +236,7 @@
 
         function updateCounter() {
             document.getElementById('totalCount').textContent = todos.length;
-            document.getElementById('completedCount').textContent = tosos.filter(t => t.completed).length;
+            document.getElementById('completedCount').textContent = todos.filter(t => t.completed).length;
         }
 
         function showMessage(text) {

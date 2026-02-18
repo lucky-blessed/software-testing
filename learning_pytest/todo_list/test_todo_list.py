@@ -4,6 +4,7 @@ import http.server
 import socketserver
 import threading
 import os
+import pytest
 
 
 #global server instance 
@@ -37,6 +38,13 @@ def stop_server():
         server.shutdown()
         print('Server is shutdown')
 
+@pytest.fixture(scope='session', autouse=True)
+def setup_server():
+    start_server(port=8000)
+    yield
+    stop_server()
+
+
 
 def test_add_todo_item(page: Page):
     print('\n=== Runing test: Add To-Do Item ===')
@@ -58,32 +66,9 @@ def test_add_todo_item(page: Page):
     assert todo_items.count() == 1, "Should have 1 to-do item after adding"
 
     # Verify the counter update
-    total_count = page.locator('#total-count').text_content()
-    assert total_count == 1, f'Total count should be 1 after adding, but got {total_count}'
+    total_count = page.locator('#totalCount').text_content()
+    assert total_count == "1", f'Total count should be 1 after adding, but got {total_count}'
 
     print("Task added succefully!")
 
     page.wait_for_timeout(500)
-
-# Run out suite of test
-def run_all_tests():
-    try:
-        pass
-        # To-do implement test
-    except AssertionError as e:
-        print(f'Test failed: {e}')
-    except Exception as e:
-        print(f'An error occured: {e}')
-
-
-
-
-
-
-if __name__ == "__main__":
-    start_server(port=8000)
-
-    try:
-        run_all_tests()
-    finally:
-        stop_server()
