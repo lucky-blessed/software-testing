@@ -20,7 +20,7 @@ jobs:
             - name: install dependencies
               run: |
                 pip install pytest playwright
-                pip install pytest-playwright
+                pip install pytest-playwright pytest-html
                 playwright install chromium
 
             - name: Run unit tests
