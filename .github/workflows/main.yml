@@ -24,9 +24,9 @@ jobs:
                 playwright install chromium
 
             - name: Run unit tests
-              run: pytest pytest/ --ignore=pytest/todo_list/ -v --html=reports/unit-tests.html --self-contained-html
+              run: pytest learning_pytest/ --ignore=learning_pytest/todo_list/ -v --html=reports/unit-tests.html --self-contained-html
             - name: Run e2e tests
-              run: pytest todo_list/test_todo_list.py -v --html=reports/e2e-tests.html --self-contained-html
+              run: pytest learning_pytest/todo_list/test_todo_list.py -v --html=reports/e2e-tests.html --self-contained-html
 
             - name: Upload test reports
               uses: action/upload-artifact@v3
