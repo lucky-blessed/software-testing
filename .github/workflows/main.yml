@@ -29,7 +29,7 @@ jobs:
               run: pytest learning_pytest/todo_list/test_todo_list.py -v --html=reports/e2e-tests.html --self-contained-html
 
             - name: Upload test reports
-              uses: action/upload-artifact@v3
+              uses: actions/upload-artifact@v3
               if: always()
               # Upload reports even if tests fail
               with:
